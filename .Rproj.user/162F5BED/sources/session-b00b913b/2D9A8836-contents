@@ -1,0 +1,113 @@
+#
+library(shiny)
+library(ggplot2)
+library(dplyr)
+
+options(stringsAsFactors = F)
+
+### Globals, runs once at app execution
+
+# URL to Open Data item
+url <- "https://opendata.arcgis.com/datasets/5fd6f3e57d794a409d72f47d78f15a32_0.csv"
+# Read in data - use UTF-8-BOM encoding to avoid odd chars in col names
+temp_data <- read.csv(url, fileEncoding = "UTF-8-BOM")
+# Convert date column
+temp_data$COLLECTION_DATE <- as.Date(temp_data$COLLECTION_DATE)
+# Get min and max date for the entire data range
+min_date <- min(temp_data$COLLECTION_DATE)
+max_date <- max(temp_data$COLLECTION_DATE)
+
+# These objects define the date and temp column names in the incoming data - 
+# the objects are used when referencing the columns in the app, such that if
+# column names are modified in the incoming data, they only modified ONCE here
+date_col = "COLLECTION_DATE"
+temp_col = "SEA_SURFACE_TEMP_AVG_C"
+
+# Get yearly averages
+yearly_avg <- temp_data %>%
+    # Remove NAs
+    filter(!is.na(get(temp_col))) %>%
+    # Add column for year
+    mutate(year = format(get(date_col), "%Y")) %>%
+    # Group by year
+    group_by(year) %>%
+    # Summarise by avg of temperature and record count
+    summarise(avg_temp = mean(get(temp_col)), samples = n()) %>%
+    # Remove years with less than 350 days sampled
+    filter(samples > 350) %>%
+    # Convert year to date
+    mutate(year = as.Date(year, format = "%Y"))
+
+
+### Define UI for application
+ui <- fluidPage(
+    # Application title
+    title = "BBH Temperature Data",
+    # Header
+    fluidRow(h1("BBH Temperature Data"), align = "center"),
+    # Row for the filter conditions
+    fluidRow(align = "center",
+        # Define the date range selector, setting intial value to
+        # min/max of input data
+        dateRangeInput("dates", "Filter by Date", 
+                              start = min_date, end = max_date,
+                              min = min_date, max = max_date),
+        # Checkbox to apply smoothing to data
+        checkboxInput("smooth", "Apply smoothed line", value = T),
+        # Checkbox to apply linear regression to yearly averages
+        checkboxInput("yearly", "Show linear regression of yearly averages")
+    ),
+    # Row to house the output plot
+    fluidRow(
+        plotOutput('plot')
+    )
+)
+
+### Define server logic
+server <- function(input, output) {
+    # Filter data based on date filter conditions
+    dataset <- reactive({
+        d <- temp_data
+        f_min_dt <- as.Date(input$dates[1], origin = "1970-01-01")
+        f_max_dt <- as.Date(input$dates[2], origin = "1970-01-01") 
+        d <- d[d[[date_col]] >= f_min_dt &
+               d[[date_col]] <= f_max_dt, ]
+        d
+    })
+    # Filter yearly data based on date filter conditions
+    yearly_dataset <- reactive({
+        d <- yearly_avg
+        f_min_year <- as.Date(input$dates[1], origin = "1970-01-01", format = "%Y")
+        f_max_year <- as.Date(input$dates[2], origin = "1970-01-01", format = "%Y") 
+        d <- d[d$year >= f_min_year &
+               d$year <= f_max_year,]
+        d
+    })
+    
+    # Output plot
+    output$plot <- renderPlot({
+        p <- ggplot(dataset(), aes_string(x = date_col, y = temp_col)) + 
+            geom_line()
+        # React to smooth checkbox
+        if (input$smooth) {
+            p <- p + geom_smooth()
+        }
+        # React to linear regression checkbox
+        if (input$yearly) {
+            p <- p + 
+                geom_point(data = yearly_dataset(), 
+                           aes_string("year", "avg_temp"), 
+                           color = "green") +
+                stat_summary(fun.data = mean_cl_normal) +
+                geom_smooth(method='lm', color = "blue")
+        }
+        p <- p +
+          ylab("Average Sea Surface Temperature (C)") +
+          xlab("Date")
+        print(p)
+        
+    }, height = 700)
+}
+
+# Run the application
+shinyApp(ui = ui, server = server)

@@ -1,0 +1,26 @@
+{
+    "id": "DC2179C0",
+    "path": "C:/github_projects/bbh_pier_portal/settings.R",
+    "project_path": "settings.R",
+    "type": "r_source",
+    "hash": "0",
+    "contents": "",
+    "dirty": false,
+    "created": 1678733844306.0,
+    "source_on_save": false,
+    "relative_order": 8,
+    "properties": {
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "128,0",
+        "scrollLine": "99"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1678730440,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1678730440,
+    "read_only": false,
+    "read_only_alternatives": []
+}

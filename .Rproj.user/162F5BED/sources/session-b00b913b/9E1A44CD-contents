@@ -1,0 +1,11 @@
+setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
+options(stringsAsFactors = F)
+
+pacman::p_load(tidyverse, sf)
+
+load('boundaries.Rda')
+
+for (lyr in ls()) {
+  this_lyr <- get(lyr)
+  sf::write_sf(this_lyr, paste0(lyr, '.geojson'))
+}
