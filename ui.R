@@ -6,12 +6,12 @@ library(shinydashboardPlus)
 
 shinyUI(function(req) {
  dashboardPage(
-   # tagList(
-   #   # Turn on shinyjs
-   #   shinyjs::useShinyjs(),
-   #   # Turn on shiny alert
-   #   useShinyalert()
-   # ),
+   tagList(
+     # Turn on shinyjs
+     shinyjs::useShinyjs(),
+     # Turn on shiny alert
+     #useShinyalert()
+   ),
     header = dashboardHeader(
       title = 'BBH Environmental Station'
     ),
@@ -24,7 +24,9 @@ shinyUI(function(req) {
         # About section
         menuItem('About', tabName = 'about', icon = icon('info')),
         # Time Series
-        menuItem('Time Series', tabName = 'ts', icon = icon('chart-line'))
+        menuItem('Time Series', tabName = 'ts', icon = icon('chart-line')),
+        # Heatmap
+        menuItem('Heatmap', tabName = 'heatmap', icon = icon('fire'))
       )
     ),
     body = dashboardBody(
@@ -40,6 +42,11 @@ shinyUI(function(req) {
         tabItem(tabName = 'ts',
           br(), br(),
           tab_ts_ui
+        ),
+        # Heatmap tab content
+        tabItem(tabName = 'heatmap',
+                br(), br(),
+                tab_heatmap_ui
         )
       )
     ) # End dashboard body

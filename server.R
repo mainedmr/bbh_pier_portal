@@ -24,4 +24,8 @@ shinyServer(function(input, output, session) {
   ## Time Series panel
   ## -------------------------------------------------------------------------
   source('tab_ts/tab_ts_srv.R', local = T)
+  ## -------------------------------------------------------------------------
+  ## Heatmap panel
+  ## -------------------------------------------------------------------------
+  source('tab_heatmap/tab_heatmap_srv.R', local = T)
 }) # End shinyServer

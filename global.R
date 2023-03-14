@@ -1,10 +1,11 @@
 library(shiny)
-#library(shinyjs)
+library(shinyjs)
 library(shinyWidgets)
 library(shinydashboardPlus)
 library(tidyverse)
 library(ggplot2)
 library(scales)
+library(viridis)
 #library(ggvis)
 library(glue)
 #library(DT)
@@ -185,6 +186,7 @@ vars_hist_groups = c('None' = 'none',
 
 # Source UI subfiles for each tab
 source('tab_ts/tab_ts_ui.R')
+source('tab_heatmap/tab_heatmap_ui.R')
 
 # Source UI subfiles for controls
 #for (ui in list.files('controls_ui', full.names = T)) {source(ui)}
