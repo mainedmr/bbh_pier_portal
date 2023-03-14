@@ -21,7 +21,7 @@ baseline_avg <- reactive({
 })
 
 baseline_change <- reactive({
-  d <- data %>%
+  d <- hist_data %>%
     left_join(baseline_avg(), by = 'yday') %>%
     mutate(baseline_diff = sea_surface_temp_avg_c - baseline_avg)
 })

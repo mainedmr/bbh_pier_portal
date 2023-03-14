@@ -16,6 +16,12 @@ library(glue)
 # Base url to the GitHub repo with data and settings
 base_url <- "https://github.com/mainedmr/bbh_pier_portal/raw/master/"
 
+# These objects define the date and temp column names in the incoming data - 
+# the objects are used when referencing the columns in the app, such that if
+# column names are modified in the incoming data, they only modified ONCE here
+date_col = "collection_date"
+temp_col = "sea_surface_temp_avg_c"
+
 # Functions to retrieve current and historic data
 # This returns one record per day, daily average
 get_hist_data <- function() {
@@ -92,12 +98,6 @@ hist_data <- get_hist_data() %>%
          met_year = met_year(month_num, year),
          astro_season = astro_season(month_num),
          astro_year = astro_year(month_num, year))
-
-# These objects define the date and temp column names in the incoming data - 
-# the objects are used when referencing the columns in the app, such that if
-# column names are modified in the incoming data, they only modified ONCE here
-date_col = "collection_date"
-temp_col = "sea_surface_temp_avg_c"
 
 # Get yearly averages
 yearly_avg <- hist_data %>%
