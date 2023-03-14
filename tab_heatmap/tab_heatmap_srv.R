@@ -16,21 +16,21 @@ baseline_avg <- reactive({
   d <- hist_data %>%
     dplyr::filter(between(year, input$sel_baseline[1], input$sel_baseline[2])) %>%
     group_by(yday) %>%
-    summarize(baseline_avg = mean(sea_surface_temp_avg_c, na.rm = T)) %>%
+    summarize(baseline_avg = mean(get(temp_col), na.rm = T)) %>%
     ungroup()
 })
 
 baseline_change <- reactive({
   d <- hist_data %>%
     left_join(baseline_avg(), by = 'yday') %>%
-    mutate(baseline_diff = sea_surface_temp_avg_c - baseline_avg)
+    mutate(baseline_diff = get(temp_col) - baseline_avg)
 })
 
 
 # Output plot
 output$heatmap_plot <- renderPlot({
   if (input$heatmap_var == 'Actual') {
-    p <- ggplot(data = hist_data, aes(x = mday, y = year, fill = sea_surface_temp_avg_c)) +
+    p <- ggplot(data = hist_data, aes(x = mday, y = year, fill = !!sym(temp_col))) +
       geom_tile(color= "white") + 
       scale_fill_viridis(name = 'Temp', option = 'C') +
       facet_wrap(~month, nrow = 1) +
