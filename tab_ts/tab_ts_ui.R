@@ -4,7 +4,7 @@ tab_ts_ui <- tags$div(
       fluidRow(h1("Historic Temperature Data"), align = "center"),
       # Row for the filter conditions
       fluidRow(align = "center",
-        # Define the date range selector, setting intial value to
+        # Define the date range selector, setting initial value to
         # min/max of input data
         sliderInput("sel_years", "Filter by Year Range", 
                     min = year_min, max = year_max,
@@ -14,7 +14,8 @@ tab_ts_ui <- tags$div(
         radioGroupButtons(
           inputId = 'ts_groupby',
           label = 'Group by:',
-          choices = c('None', 'Month', 'Season'),
+          choices = c('None', 'Month', 'Oceanic Season', 
+                      'Meteorological Season', 'Astronomical Season'),
           status = 'success'
         )
       ),
