@@ -37,13 +37,14 @@ get_hist_data <- function() {
 
 # Function for different ocean seasons
 ocean_season <- function(month) {
+  seasons <- c('Winter Storm (Dec-Feb)', 'Upwelling (Mar-Aug)', 
+               'Oceanic (Sep-Nov)')
   x <- dplyr::case_when(
-    month %in% c(12, 1, 2) ~ 'Winter Storm (Dec-Feb)',
-    month %in% 3:8 ~ 'Upwelling (Mar-Aug)',
-    month %in% 9:11 ~ 'Oceanic (Sep-Nov)'
+    month %in% c(12, 1, 2) ~ seasons[1],
+    month %in% 3:8 ~ seasons[2],
+    month %in% 9:11 ~ seasons[3]
   )
-  x <- factor(x, levels = c('Winter Storm (Dec-Feb)', 'Upwelling (Mar-Aug)', 
-                            'Oceanic (Sep-Nov)'))
+  x <- factor(x, levels = seasons)
   return(x)
 }
 ocean_year <- function(month, year) {
@@ -54,14 +55,15 @@ ocean_year <- function(month, year) {
 }
 # https://www.ncei.noaa.gov/news/meteorological-versus-astronomical-seasons
 met_season <- function(month) {
+  seasons <- c('Winter (Dec-Feb)', 'Spring (Mar-May)', 
+                'Summer (Jun-Aug)', 'Fall (Sep-Nov)')
   x <- dplyr::case_when(
-    month %in% c(12, 1, 2) ~ 'Winter (Dec-Feb)',
-    month %in% 3:5 ~ 'Spring (Mar-May)',
-    month %in% 6:8 ~ 'Summer (Jun-Aug)',
-    month %in% 9:11 ~ 'Fall (Sep-Nov)'
+    month %in% c(12, 1, 2) ~ seasons[1],
+    month %in% 3:5 ~ seasons[2],
+    month %in% 6:8 ~ seasons[3],
+    month %in% 9:11 ~ seasons[4]
   )
-  x <- factor(x, levels = c('Winter (Dec-Feb)', 'Spring (Mar-May)', 
-              'Summer (Jun-Aug)', 'Fall (Sep-Nov)'))
+  x <- factor(x, levels = seasons)
   return(x)
 }
 met_year <- function(month, year) {
@@ -71,19 +73,19 @@ met_year <- function(month, year) {
   )
 }
 astro_season <- function(month) {
+  seasons <- c('Winter (Jan-Mar)', 'Spring (Apr-Jun)', 
+               'Summer (Jul-Sep)', 'Fall (Oct-Dec)')
   x <- dplyr::case_when(
-    month %in% 1:3 ~ 'Jan-Mar',
-    month %in% 4:6 ~ 'Apr-Jun',
-    month %in% 7:9 ~ 'Jul-Sep',
-    month %in% 10:12 ~ 'Oct-Dec'
+    month %in% 1:3 ~ seasons[1],
+    month %in% 4:6 ~ seasons[2],
+    month %in% 7:9 ~ seasons[3],
+    month %in% 10:12 ~ seasons[4]
   )
-  x <- factor(x, levels = c('Jan-Mar', 'Apr-Jun', 'Jul-Sep', 'Oct-Dec'))
+  x <- factor(x, levels = seasons)
 }
 astro_year <- function(month, year) {
   return(year)
 }
-
-
 
 
 hist_data <- get_hist_data() %>%
