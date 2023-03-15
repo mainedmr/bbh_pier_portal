@@ -6,6 +6,11 @@ app_title <- "MaineDMR BBH Pier Portal"
 # local path/URL to a Markdown or HTML file to render on the about page
 about_file_path <- "https://raw.githubusercontent.com/mainedmr/Landings_Portal/master/about.md"
 
+# Plot height and width for different screens
+gbl_plot_height <- 600
+gbl_plot_width <- 800
+
+
 ## Selectors
 # # Title for selectors panel
 # selectors_title = h4("Filter data with the following selectors:")

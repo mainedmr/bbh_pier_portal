@@ -13,6 +13,9 @@ library(glue)
 #library(RColorBrewer)
 #library(scales)
 
+# Source functions file
+source("functions.R")
+
 # Base url to the GitHub repo with data and settings
 base_url <- "https://github.com/mainedmr/bbh_pier_portal/raw/master/"
 
@@ -172,8 +175,8 @@ year_max <- max(yearly_avg$year)
 #devtools::source_url(paste0(base_url, "settings.R"))
 source('settings.R')
 
-# Source functions file
-source("functions.R")
+# Source text for tabs
+source('tab_text.R')
 
 # Source queries
 #devtools::source_url(paste0(base_url, "queries.R"))
@@ -189,7 +192,23 @@ vars_hist_groups = c('None' = 'none',
 # Source UI subfiles for each tab
 source('tab_ts/tab_ts_ui.R')
 source('tab_heatmap/tab_heatmap_ui.R')
+source('tab_line_anim/tab_line_anim_ui.R')
 
 # Source UI subfiles for controls
 #for (ui in list.files('controls_ui', full.names = T)) {source(ui)}
 
+# Only render this once!
+# Animated line plot of yearly temperature stacked
+line_anim_plot <- monthly_avg %>%
+  ggplot(aes(x = month, y = avg_temp, group = year, color = year)) +
+  geom_line(linewidth = 1) +
+  scale_color_viridis() +
+  #geom_hline(data = max_yet, aes(yintercept = max_yet, group = year)) +
+  #geom_line(data = monthly_avg[monthly_avg$year > 2010,], color = 'red') +
+  labs(x = 'Month', y = 'Mean Temperature (C)', color = 'Year') +
+  # gganimate
+  transition_manual(year, cumulative = T) +
+  enter_fade() +
+  labs(title = 'BBH Pier Mean Monthly Temperature Temperature: 1905-{current_frame}')
+
+line_anim_plot2 <- animate(line_anim_plot, start_pause = 5, end_pause = 30, height = gbl_plot_height, width = gbl_plot_width)

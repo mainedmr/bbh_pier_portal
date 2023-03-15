@@ -1,7 +1,7 @@
 ### UI code for the time series tab
 tab_heatmap_ui <- tags$div(
   div(id = "div_heatmap",
-      fluidRow(h1("Heatmap"), align = "center"),
+      fluidRow(tb_heatmap_text, align = "center"),
       fluidRow(align = 'center',
         radioGroupButtons(
           inputId = 'heatmap_var',

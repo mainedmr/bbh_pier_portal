@@ -26,7 +26,9 @@ shinyUI(function(req) {
         # Time Series
         menuItem('Time Series', tabName = 'ts', icon = icon('chart-line')),
         # Heatmap
-        menuItem('Heatmap', tabName = 'heatmap', icon = icon('fire'))
+        menuItem('Heatmap', tabName = 'heatmap', icon = icon('fire')),
+        # Line animation
+        menuItem('Line Animation', tabName = 'line_anim', icon = icon('chart-area'))
       )
     ),
     body = dashboardBody(
@@ -40,13 +42,15 @@ shinyUI(function(req) {
         ),
         # Time series tab content
         tabItem(tabName = 'ts',
-          br(), br(),
           tab_ts_ui
         ),
         # Heatmap tab content
         tabItem(tabName = 'heatmap',
-                br(), br(),
                 tab_heatmap_ui
+        ),
+        # Line animation tab content
+        tabItem(tabName = 'line_anim',
+                tab_line_anim_ui
         )
       )
     ) # End dashboard body

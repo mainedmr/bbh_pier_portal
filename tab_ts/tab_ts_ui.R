@@ -1,7 +1,7 @@
 ### UI code for the time series tab
 tab_ts_ui <- tags$div(
   div(id = "div_ts",
-      fluidRow(h1("Historic Temperature Data"), align = "center"),
+      fluidRow(tb_ts_text, align = "center"),
       # Row for the filter conditions
       fluidRow(align = "center",
         # Define the date range selector, setting initial value to

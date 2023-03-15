@@ -28,4 +28,8 @@ shinyServer(function(input, output, session) {
   ## Heatmap panel
   ## -------------------------------------------------------------------------
   source('tab_heatmap/tab_heatmap_srv.R', local = T)
+  ## -------------------------------------------------------------------------
+  ## Line animation panel
+  ## -------------------------------------------------------------------------
+  source('tab_line_anim/tab_line_anim_srv.R', local = T)
 }) # End shinyServer
