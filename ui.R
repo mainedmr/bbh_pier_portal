@@ -28,7 +28,11 @@ shinyUI(function(req) {
         # Heatmap
         menuItem('Heatmap', tabName = 'heatmap', icon = icon('fire')),
         # Line animation
-        menuItem('Line Animation', tabName = 'line_anim', icon = icon('chart-area'))
+        menuItem('Line Animation', tabName = 'line_anim', icon = icon('chart-area')),
+        # Spiral animation
+        menuItem('Spiral Animation', tabName = 'spiral_anim', icon = icon('arrows-spin')),
+        # Swimdays
+        menuItem('Swim Days', tabName = 'swimdays', icon = icon('person-swimming'))
       )
     ),
     body = dashboardBody(
@@ -51,6 +55,14 @@ shinyUI(function(req) {
         # Line animation tab content
         tabItem(tabName = 'line_anim',
                 tab_line_anim_ui
+        ),
+        # Spiral animation tab content
+        tabItem(tabName = 'spiral_anim',
+                tab_spiral_anim_ui
+        ),
+        # Swim days tab content
+        tabItem(tabName = 'swimdays',
+                tab_swimdays_ui
         )
       )
     ) # End dashboard body

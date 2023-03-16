@@ -32,4 +32,12 @@ shinyServer(function(input, output, session) {
   ## Line animation panel
   ## -------------------------------------------------------------------------
   source('tab_line_anim/tab_line_anim_srv.R', local = T)
+  ## -------------------------------------------------------------------------
+  ## Spiral animation panel
+  ## -------------------------------------------------------------------------
+  source('tab_spiral_anim/tab_spiral_anim_srv.R', local = T)
+  ## -------------------------------------------------------------------------
+  ## Swimdays tab panel
+  ## -------------------------------------------------------------------------
+  source('tab_swimdays/tab_swimdays_srv.R', local = T)
 }) # End shinyServer

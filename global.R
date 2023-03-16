@@ -4,8 +4,11 @@ library(shinyWidgets)
 library(shinydashboardPlus)
 library(tidyverse)
 library(ggplot2)
+library(gganimate)
 library(scales)
 library(viridis)
+library(gifski)
+library(markdown)
 #library(ggvis)
 library(glue)
 #library(DT)
@@ -193,6 +196,8 @@ vars_hist_groups = c('None' = 'none',
 source('tab_ts/tab_ts_ui.R')
 source('tab_heatmap/tab_heatmap_ui.R')
 source('tab_line_anim/tab_line_anim_ui.R')
+source('tab_spiral_anim/tab_spiral_anim_ui.R')
+source('tab_swimdays/tab_swimdays_ui.R')
 
 # Source UI subfiles for controls
 #for (ui in list.files('controls_ui', full.names = T)) {source(ui)}
@@ -211,4 +216,12 @@ line_anim_plot <- monthly_avg %>%
   enter_fade() +
   labs(title = 'BBH Pier Mean Monthly Temperature Temperature: 1905-{current_frame}')
 
-line_anim_plot2 <- animate(line_anim_plot, start_pause = 5, end_pause = 30, height = gbl_plot_height, width = gbl_plot_width)
+line_anim_plot2 <- animate(line_anim_plot, duration = 12,
+                           start_pause = 5, end_pause = 30, 
+                           height = gbl_plot_height, width = gbl_plot_width)
+anim_save('line_plot.gif', line_anim_plot2)
+
+### Make spiral animation as global object
+source('./tab_spiral_anim/make_spiral_anim.R')
+spiral_anim_plot <- make_spiral_plot()
+anim_save('spiral_plot.gif', spiral_anim_plot)
