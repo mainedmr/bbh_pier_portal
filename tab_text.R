@@ -1,5 +1,9 @@
 #### Build text for tags in here to avoid cluttering up ui files
 
+tb_rt_text <- tagList(
+  h3('Current Conditions')
+)
+
 tb_ts_text <- tagList(
   h3('Historic Temperature Time Series'),
   paste0(

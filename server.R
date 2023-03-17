@@ -20,6 +20,30 @@ shinyServer(function(input, output, session) {
       h5("Could not load about file...")
     }
   })
+  # Every hour refresh the YTD data
+  ytd <- reactivePoll(1000, NULL,
+    # This returns a value based on the current hour, 5 minutes past hour
+    # So at 5 minutes past the hour, the returned value changes and invalidates
+    # the valueFunc, causing the data to be refreshed
+    checkFunc = function() {
+      hour <- lubridate::hour(Sys.time())
+      min <- lubridate::minute(Sys.time())
+      if (min > 3)
+        return(hour)
+      else
+        return(hour-1)
+    },
+    # Update data from PowerAutomate CSV URL
+    valueFunc = function() {
+      message('Updating YTD hourly data from PowerAutomate.')
+      get_ytd_data()
+    }
+  )
+  
+  ## -------------------------------------------------------------------------
+  ## Realtime data panel
+  ## -------------------------------------------------------------------------
+  source('tab_rt/tab_rt_srv.R', local = T)
   ## -------------------------------------------------------------------------
   ## Time Series panel
   ## -------------------------------------------------------------------------

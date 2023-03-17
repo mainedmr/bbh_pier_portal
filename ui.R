@@ -13,7 +13,7 @@ shinyUI(function(req) {
      #useShinyalert()
    ),
     header = dashboardHeader(
-      title = 'BBH Environmental Station'
+      title = app_title
     ),
     sidebar = dashboardSidebar(
       sidebarMenu(
@@ -23,8 +23,10 @@ shinyUI(function(req) {
         id = 'tab_panel',
         # About section
         menuItem('About', tabName = 'about', icon = icon('info')),
+        # Real time
+        menuItem('Current Conditions', tabName = 'rt', icon = icon('temperature-low')),
         # Time Series
-        menuItem('Time Series', tabName = 'ts', icon = icon('chart-line')),
+        menuItem('Historic Time Series', tabName = 'ts', icon = icon('chart-line')),
         # Heatmap
         menuItem('Heatmap', tabName = 'heatmap', icon = icon('fire')),
         # Line animation
@@ -43,6 +45,10 @@ shinyUI(function(req) {
           # specified in server.ui
           br(), br(),
           uiOutput('about_page')
+        ),
+        # Current conditions/realtime
+        tabItem(tabName = 'rt',
+                tab_rt_ui
         ),
         # Time series tab content
         tabItem(tabName = 'ts',

@@ -16,11 +16,15 @@ library(glue)
 #library(RColorBrewer)
 #library(scales)
 
-# Source functions file
-source("functions.R")
-
 # Base url to the GitHub repo with data and settings
 base_url <- "https://github.com/mainedmr/bbh_pier_portal/raw/master/"
+
+# Source settings
+#devtools::source_url(paste0(base_url, "settings.R"))
+source('settings.R')
+
+# Source functions file
+source("functions.R")
 
 # These objects define the date and temp column names in the incoming data - 
 # the objects are used when referencing the columns in the app, such that if
@@ -31,14 +35,20 @@ temp_col = "sea_surface_temp_avg_c"
 # Functions to retrieve current and historic data
 # This returns one record per day, daily average
 get_hist_data <- function() {
-  # URL to Open Data item
-  url <- "https://opendata.arcgis.com/datasets/5fd6f3e57d794a409d72f47d78f15a32_0.csv"
   # Read in data - use UTF-8-BOM encoding to avoid odd chars in col names
-  temp_data <- read.csv(url, fileEncoding = "UTF-8-BOM") %>%
+  temp_data <- read.csv(url_hist, fileEncoding = "UTF-8-BOM") %>%
     janitor::clean_names()
   # Convert date column
   temp_data$collection_date <- as.Date(temp_data$collection_date)
+  temp_data <- temp_data %>%
+    arrange(collection_date)
   return(temp_data)
+}
+
+get_ytd_data <- function() {
+  read.csv(url_ytd) %>%
+    mutate(datetime_char = datetime,
+           datetime = mdy_hm(datetime_char, tz = 'EST'))
 }
 
 # Function for different ocean seasons
@@ -173,11 +183,6 @@ year_min <- min(yearly_avg$year)
 year_max <- max(yearly_avg$year)
 
 
-
-# Source settings
-#devtools::source_url(paste0(base_url, "settings.R"))
-source('settings.R')
-
 # Source text for tabs
 source('tab_text.R')
 
@@ -193,6 +198,7 @@ vars_hist_groups = c('None' = 'none',
                      'Species' = 'species')
 
 # Source UI subfiles for each tab
+source('tab_rt/tab_rt_ui.R')
 source('tab_ts/tab_ts_ui.R')
 source('tab_heatmap/tab_heatmap_ui.R')
 source('tab_line_anim/tab_line_anim_ui.R')
@@ -202,26 +208,48 @@ source('tab_swimdays/tab_swimdays_ui.R')
 # Source UI subfiles for controls
 #for (ui in list.files('controls_ui', full.names = T)) {source(ui)}
 
-# Only render this once!
+# Only render these as needed!
 # Animated line plot of yearly temperature stacked
-line_anim_plot <- monthly_avg %>%
-  ggplot(aes(x = month, y = avg_temp, group = year, color = year)) +
-  geom_line(linewidth = 1) +
-  scale_color_viridis() +
-  #geom_hline(data = max_yet, aes(yintercept = max_yet, group = year)) +
-  #geom_line(data = monthly_avg[monthly_avg$year > 2010,], color = 'red') +
-  labs(x = 'Month', y = 'Mean Temperature (C)', color = 'Year') +
-  # gganimate
-  transition_manual(year, cumulative = T) +
-  enter_fade() +
-  labs(title = 'BBH Pier Mean Monthly Temperature Temperature: 1905-{current_frame}')
 
-line_anim_plot2 <- animate(line_anim_plot, duration = 12,
-                           start_pause = 5, end_pause = 30, 
-                           height = gbl_plot_height, width = gbl_plot_width)
-anim_save('line_plot.gif', line_anim_plot2)
+# If plot max year variable exists, check and toggle update as needed
+if (file.exists('anim_max_year.Rda')) {
+  load('anim_max_year.Rda')
+  update_plots <- anim_max_year < year_max
+} else {
+  update_plots <- T
+}
 
-### Make spiral animation as global object
-source('./tab_spiral_anim/make_spiral_anim.R')
-spiral_anim_plot <- make_spiral_plot()
-anim_save('spiral_plot.gif', spiral_anim_plot)
+# If any of these evaluate as TRUE, need to re-render GIFs
+if (
+  update_plots |
+  !file.exists('line_plot.gif') |
+  !file.exists('spiral_plot.gif') |
+  !file.exists('anim_max_year.Rda')
+  ) {
+  line_anim_plot <- monthly_avg %>%
+    ggplot(aes(x = month, y = avg_temp, group = year, color = year)) +
+    geom_line(linewidth = 1) +
+    scale_color_viridis() +
+    #geom_hline(data = max_yet, aes(yintercept = max_yet, group = year)) +
+    #geom_line(data = monthly_avg[monthly_avg$year > 2010,], color = 'red') +
+    labs(x = 'Month', y = 'Mean Temperature (C)', color = 'Year') +
+    # gganimate
+    transition_manual(year, cumulative = T) +
+    enter_fade() +
+    labs(title = 'BBH Pier Mean Monthly Temperature Temperature: 1905-{current_frame}')
+  
+  line_anim_plot2 <- animate(line_anim_plot, duration = 12,
+                             start_pause = 5, end_pause = 30,
+                             height = gbl_plot_height, width = gbl_plot_width)
+  
+  anim_save('line_plot.gif', line_anim_plot2)
+  
+  ### Make spiral animation as global object
+  source('./tab_spiral_anim/make_spiral_anim.R')
+  spiral_anim_plot <- make_spiral_plot()
+  anim_save('spiral_plot.gif', spiral_anim_plot)
+  
+  # Save off Rda with plot max year
+  anim_max_year <- year_max
+  save(anim_max_year, file = 'anim_max_year.Rda')
+}
