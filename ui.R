@@ -5,17 +5,17 @@ library(shinydashboard)
 library(shinydashboardPlus)
 
 shinyUI(function(req) {
- dashboardPage(
+  shinydashboard::dashboardPage(
    tagList(
      # Turn on shinyjs
-     shinyjs::useShinyjs(),
+     shinyjs::useShinyjs()
      # Turn on shiny alert
      #useShinyalert()
    ),
-    header = dashboardHeader(
+    header = shinydashboardPlus::dashboardHeader(
       title = app_title
     ),
-    sidebar = dashboardSidebar(
+    sidebar = shinydashboardPlus::dashboardSidebar(
       sidebarMenu(
         # Prevent sidebar from dissappearing when scrolling
         #style = 'position: fixed; overflow: visible;',

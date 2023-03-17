@@ -1,6 +1,7 @@
 library(shiny)
 library(shinyjs)
 library(shinyWidgets)
+library(shinydashboard)
 library(shinydashboardPlus)
 library(tidyverse)
 library(ggplot2)
@@ -186,17 +187,6 @@ year_max <- max(yearly_avg$year)
 # Source text for tabs
 source('tab_text.R')
 
-# Source queries
-#devtools::source_url(paste0(base_url, "queries.R"))
-
-# Set global table options
-#options(DT.options = gbl_dt_options)
-
-
-# Groups to show when historic landings are selected
-vars_hist_groups = c('None' = 'none',
-                     'Species' = 'species')
-
 # Source UI subfiles for each tab
 source('tab_rt/tab_rt_ui.R')
 source('tab_ts/tab_ts_ui.R')
@@ -220,11 +210,11 @@ if (file.exists('anim_max_year.Rda')) {
 }
 
 # If any of these evaluate as TRUE, need to re-render GIFs
-if (
-  update_plots |
-  !file.exists('line_plot.gif') |
-  !file.exists('spiral_plot.gif') |
-  !file.exists('anim_max_year.Rda')
+if ( FALSE
+  # update_plots |
+  # !file.exists('line_plot.gif') |
+  # !file.exists('spiral_plot.gif') |
+  # !file.exists('anim_max_year.Rda')
   ) {
   line_anim_plot <- monthly_avg %>%
     ggplot(aes(x = month, y = avg_temp, group = year, color = year)) +
