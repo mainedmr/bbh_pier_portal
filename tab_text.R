@@ -4,6 +4,16 @@ tb_rt_text <- tagList(
   h3('Current Conditions')
 )
 
+tb_ytd_text <- tagList(
+  h3('Year-to-Date Temperature'),
+  paste0(
+  'The year to date daily average sea surface temperature is shown below as a ',
+  'solid black line. A baseline range can be used to adjust the baseline average ',
+  ' (black dashed line) and baseline 95% confidence interval (grey ribbon).'
+  )
+)
+
+
 tb_ts_text <- tagList(
   h3('Historic Temperature Time Series'),
   paste0(

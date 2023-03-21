@@ -189,6 +189,7 @@ source('tab_text.R')
 
 # Source UI subfiles for each tab
 source('tab_rt/tab_rt_ui.R')
+source('tab_ytd/tab_ytd_ui.R')
 source('tab_ts/tab_ts_ui.R')
 source('tab_heatmap/tab_heatmap_ui.R')
 source('tab_line_anim/tab_line_anim_ui.R')

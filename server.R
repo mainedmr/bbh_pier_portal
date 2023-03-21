@@ -40,10 +40,22 @@ shinyServer(function(input, output, session) {
     }
   )
   
+  ytd_daily <- reactive({
+    ytd() %>%
+      mutate(date = as.Date(datetime)) %>%
+      group_by(date) %>%
+      summarise(across(where(is.numeric), ~ mean(.x, na.rm = TRUE))) %>%
+      ungroup()
+  })
+  
   ## -------------------------------------------------------------------------
   ## Realtime data panel
   ## -------------------------------------------------------------------------
   source('tab_rt/tab_rt_srv.R', local = T)
+  ## -------------------------------------------------------------------------
+  ## Year to date data panel
+  ## -------------------------------------------------------------------------
+  source('tab_ytd/tab_ytd_srv.R', local = T)
   ## -------------------------------------------------------------------------
   ## Time Series panel
   ## -------------------------------------------------------------------------

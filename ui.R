@@ -25,6 +25,8 @@ shinyUI(function(req) {
         menuItem('About', tabName = 'about', icon = icon('info')),
         # Real time
         menuItem('Current Conditions', tabName = 'rt', icon = icon('temperature-low')),
+        # Real time
+        menuItem('Year To Date', tabName = 'ytd', icon = icon('calendar-days')),
         # Time Series
         menuItem('Historic Time Series', tabName = 'ts', icon = icon('chart-line')),
         # Heatmap
@@ -49,6 +51,10 @@ shinyUI(function(req) {
         # Current conditions/realtime
         tabItem(tabName = 'rt',
                 tab_rt_ui
+        ),
+        # Year to Date
+        tabItem(tabName = 'ytd',
+                tab_ytd_ui
         ),
         # Time series tab content
         tabItem(tabName = 'ts',
