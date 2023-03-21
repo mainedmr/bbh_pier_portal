@@ -12,8 +12,8 @@ ytd_baseline <- reactive({
   d <- hist_data %>%
     dplyr::filter(between(year, input$sel_ytd_baseline[1], input$sel_ytd_baseline[2])) %>%
     group_by(yday) %>%
-    summarize(baseline_avg = mean(get(temp_col), na.rm = T),
-              baseline_sd = sd(get(temp_col), na.rm = T), n = n()) %>%
+    summarize(baseline_avg = mean(get(temp_column()), na.rm = T),
+              baseline_sd = sd(get(temp_column()), na.rm = T), n = n()) %>%
     ungroup() %>%
     mutate(baseline_se = baseline_sd/sqrt(n),
            baseline_lower_ci = lower_ci(baseline_avg, baseline_se, n),
@@ -29,9 +29,9 @@ output$ytd_plot <- renderPlot({
   p <- ggplot(ytd_baseline(), aes(x = date)) + 
     geom_ribbon(aes(ymin = baseline_lower_ci, ymax = baseline_upper_ci), fill = 'lightgrey') +
     geom_line(aes(y = baseline_avg), color = 'black', linetype = 2) +
-    geom_line(data = ytd_daily(), aes(x = date, y = sea_surface_temp_avg_c)) +
-    geom_point(data = ytd_daily(), aes(x = date, y = sea_surface_temp_avg_c)) +
-    ylab("Sea Surface Temperature (C)") +
+    geom_line(data = ytd_daily(), aes(x = date, y = !!sym(temp_column()))) +
+    geom_point(data = ytd_daily(), aes(x = date, y = !!sym(temp_column()))) +
+    ylab(glue("Sea Surface Temperature ({temp_label()})")) +
     xlab("Date")
   print(p)
 }, height = 700)

@@ -45,8 +45,19 @@ shinyServer(function(input, output, session) {
       mutate(date = as.Date(datetime)) %>%
       group_by(date) %>%
       summarise(across(where(is.numeric), ~ mean(.x, na.rm = TRUE))) %>%
-      ungroup()
+      ungroup() %>%
+      mutate(temp_c = get(temp_col),
+             temp_f = c2f(temp_c))
   })
+  
+  temp_label <- reactive({
+    ifelse(input$temp_is_c, 'C', 'F')
+  })
+  
+  temp_column <- reactive({
+    ifelse(input$temp_is_c, 'temp_c', 'temp_f')
+  })
+  
   
   ## -------------------------------------------------------------------------
   ## Realtime data panel

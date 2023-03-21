@@ -13,7 +13,25 @@ shinyUI(function(req) {
      #useShinyalert()
    ),
     header = shinydashboardPlus::dashboardHeader(
-      title = app_title
+      title = app_title,
+      fixed = T,
+      leftUi = tagList(
+        switchInput(
+          inputId = 'temp_is_c',
+          label = 'Units',
+          value = F,
+          onLabel = 'C',
+          offLabel = 'F',
+          onStatus = NULL,
+          offStatus = NULL,
+          size = "default",
+          labelWidth = "auto",
+          handleWidth = "auto",
+          disabled = FALSE,
+          inline = FALSE,
+          width = NULL
+        )
+      )
     ),
     sidebar = shinydashboardPlus::dashboardSidebar(
       sidebarMenu(

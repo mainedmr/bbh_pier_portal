@@ -48,7 +48,9 @@ hist_data <- get_hist_data() %>%
          met_season = met_season(month_num),
          met_year = met_year(month_num, year),
          astro_season = astro_season(month_num),
-         astro_year = astro_year(month_num, year))
+         astro_year = astro_year(month_num, year)) %>%
+  mutate(temp_c = get(temp_col),
+         temp_f = c2f(temp_c))
 
 # Get yearly averages
 yearly_avg <- hist_data %>%

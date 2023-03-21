@@ -73,3 +73,12 @@ astro_season <- function(month) {
 astro_year <- function(month, year) {
   return(year)
 }
+
+# Functions to convert between F and C
+c2f <- function(x) {
+  (x * 9/5) + 32
+}
+
+f2c <- function(x) {
+  (x - 32) * 5/9
+}
