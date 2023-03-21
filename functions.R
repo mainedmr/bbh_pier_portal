@@ -1,79 +1,75 @@
-submit_event <- function(event_type, event_value, guid, ip, lat = 0, lon = 0) {
-  if (!(exists("tracking_url")) | !exists("access_code")) {
-    return(F)
-  }
-   r <- httr::POST(url = tracking_url,
-                   body = list(access_code = access_code,
-                               event_type = event_type,
-                               event_value = event_value,
-                               datetime = as.integer(Sys.time()),
-                               session_guid = guid,
-                               lat = lat,
-                               lon = lon,
-                               ip_address = ip),
-                   encode = "json")
-   # Stop for status
-   #httr::stop_for_status()
-}
-
 # Returns name of a named vector item vs its value
 get_var_name <- function(vector, value) {
   names(vector)[match(value, vector)]
 }
 
-# For a vector of a dataframes colnames, finds the labels from dt_cols, returning
-# a named vector to pass to datatable()
-dt_col_labels <- function(columns) {
-  # Blank vectors
-  col_names <- c()
-  col_labels <- c()
-  # Incrementer
-  i <- 1
-  # For each input column name
-  for (cname in columns) {
-    # Check if it is in vars_groups
-    if (cname %in% vars_groups) {
-      # If so append name and label to vectors and increment i
-      col_names[i] <- cname
-      col_labels[i] <- get_var_name(vars_groups, cname)
-      i <- i + 1
-      next
-    }
-    # Check if it is in vars_series
-    if (cname %in% vars_series) {
-      # If so append name and label to vectors and increment i
-      col_names[i] <- cname
-      col_labels[i] <- get_var_name(vars_series, cname)
-      i <- i + 1
-      next
-    }
-    # Check if it is in the dt_cols list
-    if (!is.null(dt_cols[[cname]]$name)) {
-      # If so append name and label to vectors and increment i
-      col_names[i] <- dt_cols[[cname]]$name
-      col_labels[i] <- dt_cols[[cname]]$label
-      i <- i + 1
-    }
-  }
-  # Assign labels as names and return
-  names(col_names) <- col_labels
-  return(col_names)
+# Functions to retrieve current and historic data
+# This returns one record per day, daily average
+get_hist_data <- function() {
+  # Read in data - use UTF-8-BOM encoding to avoid odd chars in col names
+  temp_data <- read.csv(url_hist, fileEncoding = "UTF-8-BOM") %>%
+    janitor::clean_names()
+  # Convert date column
+  temp_data$collection_date <- as.Date(temp_data$collection_date)
+  temp_data <- temp_data %>%
+    arrange(collection_date)
+  return(temp_data)
 }
 
-# Get a named vector of field names from dt_cols to provide to a selector for
-# a given field type
-dt_cols_to_vec <- function(col_type) {
-  # Blank vectors
-  vec_names <- c()
-  vec_labels <- c()
-  # For each field if the type matches append to the vector
-  for (field in names(dt_cols)) {
-    if (dt_cols[[field]]$type == col_type) {
-      vec_names <- c(vec_names, dt_cols[[field]]$name)
-      vec_labels <- c(vec_labels, dt_cols[[field]]$label)
-    }
-  }
-  # Assign labels as names for vector
-  names(vec_names) <- vec_labels
-  return(vec_names)
+get_ytd_data <- function() {
+  read.csv(url_ytd) %>%
+    mutate(datetime_char = datetime,
+           datetime = mdy_hm(datetime_char, tz = 'EST'))
+}
+
+# Function for different ocean seasons
+ocean_season <- function(month) {
+  seasons <- c('Winter Storm (Dec-Feb)', 'Upwelling (Mar-Aug)', 
+               'Oceanic (Sep-Nov)')
+  x <- dplyr::case_when(
+    month %in% c(12, 1, 2) ~ seasons[1],
+    month %in% 3:8 ~ seasons[2],
+    month %in% 9:11 ~ seasons[3]
+  )
+  x <- factor(x, levels = seasons)
+  return(x)
+}
+ocean_year <- function(month, year) {
+  dplyr::case_when(
+    month == 12 ~ year + 1,
+    month %in% 1:11 ~ year
+  )
+}
+# https://www.ncei.noaa.gov/news/meteorological-versus-astronomical-seasons
+met_season <- function(month) {
+  seasons <- c('Winter (Dec-Feb)', 'Spring (Mar-May)', 
+               'Summer (Jun-Aug)', 'Fall (Sep-Nov)')
+  x <- dplyr::case_when(
+    month %in% c(12, 1, 2) ~ seasons[1],
+    month %in% 3:5 ~ seasons[2],
+    month %in% 6:8 ~ seasons[3],
+    month %in% 9:11 ~ seasons[4]
+  )
+  x <- factor(x, levels = seasons)
+  return(x)
+}
+met_year <- function(month, year) {
+  dplyr::case_when(
+    month == 12 ~ year + 1,
+    month %in% 1:11 ~ year
+  )
+}
+astro_season <- function(month) {
+  seasons <- c('Winter (Jan-Mar)', 'Spring (Apr-Jun)', 
+               'Summer (Jul-Sep)', 'Fall (Oct-Dec)')
+  x <- dplyr::case_when(
+    month %in% 1:3 ~ seasons[1],
+    month %in% 4:6 ~ seasons[2],
+    month %in% 7:9 ~ seasons[3],
+    month %in% 10:12 ~ seasons[4]
+  )
+  x <- factor(x, levels = seasons)
+}
+astro_year <- function(month, year) {
+  return(year)
 }
