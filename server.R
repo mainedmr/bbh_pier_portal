@@ -36,7 +36,8 @@ shinyServer(function(input, output, session) {
     # Update data from PowerAutomate CSV URL
     valueFunc = function() {
       message('Updating YTD hourly data from PowerAutomate.')
-      get_ytd_data()
+      get_ytd_data() %>%
+        mutate(temp_c = get(temp_col), temp_f = c2f(get(temp_col)))
     }
   )
   
@@ -58,6 +59,25 @@ shinyServer(function(input, output, session) {
     ifelse(input$temp_is_c, 'temp_c', 'temp_f')
   })
   
+  
+  # Session-wide boolean for swim slider bumped
+  swim_bumped <- F
+  # React when tab is changed
+  observeEvent(input$tab_panel, { 
+    if (input$tab_panel == "swimdays" & !swim_bumped) {
+      # Update to default value at app start
+      if (input$temp_is_c) {
+        updateSliderInput(inputId = 'sel_swim_thresh',
+                          label = glue("Select minimum swimming temperature ({temp_label()}):"),
+                          min = 0, max = 26, value = f2c(60))
+      } else {
+        updateSliderInput(inputId = 'sel_swim_thresh',
+                          label = glue("Select minimum swimming temperature ({temp_label()}):"),
+                          min = 32, max = 80, value = 60)
+      }
+      swim_bumped <<- T
+    }
+  })
   
   ## -------------------------------------------------------------------------
   ## Realtime data panel

@@ -16,7 +16,7 @@ shinyUI(function(req) {
       title = app_title,
       fixed = T,
       leftUi = tagList(
-        switchInput(
+        shinyWidgets::switchInput(
           inputId = 'temp_is_c',
           label = 'Units',
           value = F,

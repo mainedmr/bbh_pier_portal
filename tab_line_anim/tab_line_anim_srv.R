@@ -2,7 +2,8 @@
 
 output$line_anim <- renderImage({
   # Return a list containing the filename
-  list(src = 'line_plot.gif',
+  file_name <- ifelse(input$temp_is_c, 'line_plot_c.gif', 'line_plot_f.gif')
+  list(src = file_name,
        contentType = 'image/gif'
        # width = 400,
        # height = 300,

@@ -51,15 +51,15 @@ output$val_time <- renderValueBox({
 })
 output$val_sst <- renderValueBox({
   valueBox(
-    subtitle = 'Sea Surface Temp (C)',
-    value = current_conditions()$sea_surface_temp_avg_c,
+    subtitle = glue('Sea Surface Temp ({temp_label()})'),
+    value = current_conditions()[[temp_column()]],
     icon = icon('water')
   )
 })
 output$val_air_temp <- renderValueBox({
   valueBox(
-    subtitle = 'Air Temp (C)',
-    value = current_conditions()$air_temp_avg_c,
+    subtitle = glue('Air Temp ({temp_label()})'),
+    value = ifelse(input$temp_is_c, current_conditions()$air_temp_avg_c, c2f(current_conditions()$air_temp_avg_c)),
     icon = icon('temperature-full')
   )
 })
