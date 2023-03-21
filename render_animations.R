@@ -1,5 +1,5 @@
 ### Update animation GIFs for Portal
-libary(tidyverse)
+library(tidyverse)
 
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 
