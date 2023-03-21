@@ -19,7 +19,12 @@ library(glue)
 #library(scales)
 
 # Base url to the GitHub repo with data and settings
-base_url <- "https://github.com/mainedmr/bbh_pier_portal/raw/master/"
+base_url <- "https://github.com/mainedmr/bbh_pier_portal/raw/main/"
+
+# # Download GIF animations from GitHub
+# for (f in c('line_plot.gif', 'spiral_plot.gif')) {
+#   download.file(paste0(base_url, f), f)
+# }
 
 # Source settings from GitHub
 devtools::source_url(paste0(base_url, "settings.R"))
@@ -28,11 +33,9 @@ devtools::source_url(paste0(base_url, "settings.R"))
 # Source functions file
 source('functions.R')
 
-# These objects define the date and temp column names in the incoming data - 
-# the objects are used when referencing the columns in the app, such that if
-# column names are modified in the incoming data, they only modified ONCE here
-date_col = "collection_date"
-temp_col = "sea_surface_temp_avg_c"
+# Source tab text from GH
+devtools::source_url(paste0(base_url, "tab_text.R"))
+
 
 hist_data <- get_hist_data() %>%
   mutate(year = year(get(date_col)),
@@ -112,9 +115,6 @@ year_col <- 'year'
 year_min <- min(yearly_avg$year)
 year_max <- max(yearly_avg$year)
 
-
-# Source text for tabs
-source('tab_text.R')
 
 # Source UI subfiles for each tab
 source('tab_rt/tab_rt_ui.R')
