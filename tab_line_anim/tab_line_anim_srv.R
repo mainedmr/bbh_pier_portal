@@ -8,5 +8,5 @@ output$line_anim <- renderImage({
        # height = 300,
        # alt = "This is alternate text"
   )
-}, deleteFile = T)
+}, deleteFile = F)
 

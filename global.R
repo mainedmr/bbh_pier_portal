@@ -28,7 +28,7 @@ base_url <- "https://github.com/mainedmr/bbh_pier_portal/raw/main/"
 
 # Source settings from GitHub
 devtools::source_url(paste0(base_url, "settings.R"))
-#source('settings.R')
+source('settings.R')
 
 # Source functions file
 source('functions.R')
