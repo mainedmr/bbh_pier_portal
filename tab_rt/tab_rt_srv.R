@@ -21,14 +21,17 @@ ytd_cols <- reactive({
   col_names <- ytd() %>%
     dplyr::select(-starts_with('datetime')) %>%
     colnames()
-  names(col_names) <- snakecase::to_title_case(col_names)
+  names(col_names) <- snakecase::to_title_case(col_names) %>%
+    replace(., list = c(which(. == 'Temp f'), which(. == 'Temp c')), 
+            values = c('Sea Surface Temp F', 'Sea Surface Temp C'))
+  print(col_names)
   return(col_names)
 })
 
 # Render field dropdown from colnames
 output$ui_rt_field <- renderUI({
   selectizeInput('sel_rt_field', 'Select plot field',
-                 choices = ytd_cols(), selected = 'sea_surface_temp_avg_c')
+                 choices = ytd_cols(), selected = 'temp_f')
 })
 
 
@@ -59,7 +62,7 @@ output$val_sst <- renderValueBox({
 output$val_air_temp <- renderValueBox({
   valueBox(
     subtitle = glue('Air Temp ({temp_label()})'),
-    value = ifelse(input$temp_is_c, current_conditions()$air_temp_avg_c, c2f(current_conditions()$air_temp_avg_c)),
+    value = ifelse(input$temp_is_c, current_conditions()$air_temp_c, current_conditions()$air_temp_f),
     icon = icon('temperature-full')
   )
 })
@@ -83,8 +86,8 @@ output$header_text <- renderText({
   update_time <- current_conditions()$datetime_char
   sst_f <- round(current_conditions()$temp_f, 2)
   sst_c <- round(current_conditions()$temp_c, 2)
-  air_temp_f <- round(c2f(current_conditions()$air_temp_avg_c), 2)
-  air_temp_c <- round(current_conditions()$air_temp_avg_c, 2)
+  air_temp_f <- round(current_conditions()$air_temp_f, 2)
+  air_temp_c <- round(current_conditions()$air_temp_c, 2)
   air_press <- round(current_conditions()$bp_avg_mb, 2)
   rh <- round(current_conditions()$rh, 2)
   

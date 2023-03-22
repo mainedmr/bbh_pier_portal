@@ -37,7 +37,10 @@ shinyServer(function(input, output, session) {
     valueFunc = function() {
       message('Updating YTD hourly data from PowerAutomate.')
       get_ytd_data() %>%
-        mutate(temp_c = get(temp_col), temp_f = c2f(get(temp_col)))
+        mutate(temp_c = get(temp_col), temp_f = c2f(get(temp_col)),
+               air_temp_c = air_temp_avg_c, air_temp_f = c2f(air_temp_avg_c)) %>%
+        dplyr::select(-sea_surface_temp_avg_c, -air_temp_avg_c) %>%
+        dplyr::select(temp_f, temp_c, air_temp_f, air_temp_c, everything())
     }
   )
   
