@@ -36,13 +36,14 @@ output$ui_rt_field <- renderUI({
 
 
 # Output plot
-output$rt_weekly <- renderPlot({
-  ggplot(data = last_week(), aes(x = datetime, y = !!sym(input$sel_rt_field))) +
+output$rt_weekly <- plotly::renderPlotly({
+  p <- ggplot(data = last_week(), aes(x = datetime, y = !!sym(input$sel_rt_field))) +
     geom_line() +
     geom_point() +
     scale_x_datetime(date_labels = '%b-%d-%Y', date_breaks = '24 hours') +
     labs(x = 'Date/Time', y = get_var_name(ytd_cols(), input$sel_rt_field))
-}, height = gbl_plot_height)
+  plotly::ggplotly(p)
+})
 
 # Render value boxes for current conditions
 output$val_time <- renderValueBox({

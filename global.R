@@ -17,6 +17,7 @@ library(glue)
 #library(uuid)
 #library(RColorBrewer)
 #library(scales)
+library(plotly)
 
 # Base url to the GitHub repo with data and settings
 base_url <- "https://github.com/mainedmr/bbh_pier_portal/raw/main/"
