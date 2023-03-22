@@ -1,0 +1,17 @@
+/* Make sidebar and header fixed per https://stackoverflow.com/questions/41240878/r-shiny-fixed-sidebar-and-main-header-in-a-shiny-dashboard */
+.sidebar {
+  color: #FFF;
+  position: fixed;
+  width: 220px;
+  white-space: nowrap;
+  overflow: visible;
+}
+
+.main-header {
+  position: fixed;
+  width:100%;
+}
+
+.content {
+  margin-top: 50px;
+}

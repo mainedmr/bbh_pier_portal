@@ -62,6 +62,8 @@ shinyUI(function(req) {
       # Hide gear icon/hyperlink in upper right corner
       tags$script(HTML('var e = document.querySelector("body > div.wrapper > header > nav > div:nth-child(4) > ul > li:last-child > a");
                       e.setAttribute("style", "display: none;");')),
+      # Custom CSS to do things
+      tags$head(includeCSS('www/style.css')),
       tabItems(
         # About tab content
         tabItem(tabName = 'about',
