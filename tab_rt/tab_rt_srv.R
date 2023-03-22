@@ -77,3 +77,19 @@ output$val_rh <- renderValueBox({
     icon = icon('percent')
   )
 })
+
+# Render current conditions in the header
+output$header_text <- renderText({
+  update_time <- current_conditions()$datetime_char
+  sst_f <- round(current_conditions()$temp_f, 2)
+  sst_c <- round(current_conditions()$temp_c, 2)
+  air_temp_f <- round(c2f(current_conditions()$air_temp_avg_c), 2)
+  air_temp_c <- round(current_conditions()$air_temp_avg_c, 2)
+  air_press <- round(current_conditions()$bp_avg_mb, 2)
+  rh <- round(current_conditions()$rh, 2)
+  
+  glue('<h4 align="left">Last Update: {update_time} - Sea Surface Temp: {sst_f}F/{sst_c}C \
+        - Air Temp: {air_temp_f}F/{air_temp_c}C - Air Pressure: {air_press}mb \
+       - Relative Humidity: {rh}%</h3>')
+  
+})

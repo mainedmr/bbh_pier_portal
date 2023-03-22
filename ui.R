@@ -30,7 +30,8 @@ shinyUI(function(req) {
           disabled = FALSE,
           inline = FALSE,
           width = NULL
-        )
+        ),
+        htmlOutput('header_text', inline = T)
       )
     ),
     sidebar = shinydashboardPlus::dashboardSidebar(
@@ -58,6 +59,9 @@ shinyUI(function(req) {
       )
     ),
     body = dashboardBody(
+      # Hide gear icon/hyperlink in upper right corner
+      tags$script(HTML('var e = document.querySelector("body > div.wrapper > header > nav > div:nth-child(4) > ul > li:last-child > a");
+                      e.setAttribute("style", "display: none;");')),
       tabItems(
         # About tab content
         tabItem(tabName = 'about',
