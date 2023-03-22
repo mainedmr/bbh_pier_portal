@@ -18,7 +18,7 @@ tab_rt_ui <- tags$div(
         uiOutput('ui_rt_field')
       ),
       fluidRow(
-        plotly::plotlyOutput('rt_weekly')
+        plotly::plotlyOutput('rt_weekly', height = gbl_plot_height)
       )
   )
 )

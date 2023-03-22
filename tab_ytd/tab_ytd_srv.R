@@ -25,7 +25,7 @@ ytd_baseline <- reactive({
 
 
 # Output plot
-output$ytd_plot <- renderPlot({
+output$ytd_plot <- plotly::renderPlotly({
   p <- ggplot(ytd_baseline(), aes(x = date)) + 
     geom_ribbon(aes(ymin = baseline_lower_ci, ymax = baseline_upper_ci), fill = 'lightgrey') +
     geom_line(aes(y = baseline_avg), color = 'black', linetype = 2) +
@@ -33,5 +33,5 @@ output$ytd_plot <- renderPlot({
     geom_point(data = ytd_daily(), aes(x = date, y = !!sym(temp_column()))) +
     ylab(glue("Sea Surface Temperature ({temp_label()})")) +
     xlab("Date")
-  print(p)
-}, height = 700)
+  plotly::ggplotly(p)
+})

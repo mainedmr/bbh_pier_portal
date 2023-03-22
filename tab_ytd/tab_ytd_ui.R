@@ -12,7 +12,7 @@ tab_ytd_ui <- tags$div(
       ),
       # Row to house the output plot
       fluidRow(
-        plotOutput('ytd_plot')
+        plotly::plotlyOutput('ytd_plot', height = gbl_plot_height)
       )
   )
 )
