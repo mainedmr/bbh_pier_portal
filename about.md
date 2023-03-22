@@ -7,15 +7,15 @@ The sea water temperature record of the DMR Boothbay Harbor (BBH) Environmental 
 
 Daily sea water temperature data are available below at our Open Data Portal, or in PDF, CSV (comma-separated values) or XLSX (Microsoft Excel) format. PDF files may require Adobe Reader software ([download here, free](http://get.adobe.com/reader/)). Please contact [Jesica Waller](https://www.maine.gov/dmr/about-us/staff-directory) if you require an alternate format.
 
-[Daily sea water temperatures, 1905 - 2022, Open Data Portal](https://dmr-maine.opendata.arcgis.com/datasets/5fd6f3e57d794a409d72f47d78f15a32_0)
-[Daily sea water temperatures, 1905 - 2019, PDF file, 2.1 MB](https://www.maine.gov/dmr/sites/maine.gov.dmr/files/docs/1905-2019sst.pdf)
-[Daily sea water temperatures, 1905 - 2019, CSV file, 0.8 kb](https://www.maine.gov/dmr/sites/maine.gov.dmr/files/docs/1905-2019sst.csv)
-[Daily sea water temperatures, 1905 - 2019, XLSX file, 1.0 MB](https://www.maine.gov/dmr/sites/maine.gov.dmr/files/docs/1905-2019sst.xlsx)
+- [Daily sea water temperatures, 1905 - 2022, Open Data Portal](https://dmr-maine.opendata.arcgis.com/datasets/5fd6f3e57d794a409d72f47d78f15a32_0)
+- [Daily sea water temperatures, 1905 - 2019, PDF file, 2.1 MB](https://www.maine.gov/dmr/sites/maine.gov.dmr/files/docs/1905-2019sst.pdf)
+- [Daily sea water temperatures, 1905 - 2019, CSV file, 0.8 kb](https://www.maine.gov/dmr/sites/maine.gov.dmr/files/docs/1905-2019sst.csv)
+- [Daily sea water temperatures, 1905 - 2019, XLSX file, 1.0 MB](https://www.maine.gov/dmr/sites/maine.gov.dmr/files/docs/1905-2019sst.xlsx)
 
 ## Other Observations and Statistics Reported
 Currently, observations of air temperature, barometric pressure, sea water temperature, relative humidity, wind speed, wind direction, dissolved oxygen, partial pressure of carbon dioxide, and pH are recorded at hourly intervals.
 
-Hourly/daily/monthly/annual summaries of DMR BBH Environmental Monitoring Program data can be obtained by contacting Please contact [Jesica Waller](https://www.maine.gov/dmr/about-us/staff-directory).
+Hourly/daily/monthly/annual summaries of DMR BBH Environmental Monitoring Program data can be obtained by contacting [Jesica Waller](https://www.maine.gov/dmr/about-us/staff-directory).
 
 ## Station Description
 The DMR Boothbay Harbor Environmental Monitoring Program is operated by the Maine Department of Marine Resources with the goal of maintaining a continuous source of high-quality physical environmental data for the Maine coast. The station is located at the Department's Fisheries Laboratory in West Boothbay Harbor, Maine (43¯50'40" N, 69¯38'30" W). All of the station's sensors are deployed at or near the laboratory pier in a sheltered cove on the west side of Boothbay Harbor. The main harbor is very sheltered, and the cove is more so. Wave heights during a severe storm may reach three or four feet in the main harbor but rarely reach even two feet in the cove. This area experiences heavy commercial and recreational boat traffic during the summer months. Mean tide range has been calculated by the National Ocean Service at 8.8 feet and the spring tide range is given as 10.1 feet. While the harbor typically remains open throughout the year, the cove often develops a thin layer of ice which would extend from shore to shore if it weren't broken up by the passage of various small vessels. Freshwater influences within the harbor consist of a few small streams which provide drainage for the immediate area. Two larger rivers, the Sheepscot to the southwest and the Damariscotta to the northeast, are nearby.
