@@ -49,9 +49,7 @@ shinyServer(function(input, output, session) {
       mutate(date = as.Date(datetime)) %>%
       group_by(date) %>%
       summarise(across(where(is.numeric), ~ mean(.x, na.rm = TRUE))) %>%
-      ungroup() %>%
-      mutate(temp_c = get(temp_col),
-             temp_f = c2f(temp_c))
+      ungroup()
   })
   
   temp_label <- reactive({
