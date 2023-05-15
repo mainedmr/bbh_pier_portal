@@ -19,7 +19,7 @@ ytd_baseline <- reactive({
            baseline_lower_ci = lower_ci(baseline_avg, baseline_se, n),
            baseline_upper_ci = upper_ci(baseline_avg, baseline_se, n),
            # Shift yday relative to the current YTD year
-           date = (yday-1) + min(ytd_daily()$date)) %>%
+           date = (yday-1) + ymd(paste0(min(year(ytd_daily()$date)), '0101'))) %>%
     dplyr::filter(date <= max(ytd_daily()$date))
 })
 
