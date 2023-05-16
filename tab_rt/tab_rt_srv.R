@@ -92,8 +92,8 @@ output$header_text <- renderText({
   air_press <- round(current_conditions()$bp_avg_mb, 2)
   rh <- round(current_conditions()$rh, 2)
   
-  glue('<h4 align="left"><b>Last Update: {update_time} - Sea Surface Temp: {sst_f}F/{sst_c}C \
-        - Air Temp: {air_temp_f}F/{air_temp_c}C - Air Pressure: {air_press}mb \
-       - Relative Humidity: {rh}%</b></h3>')
+  glue('<h4 align="center"><b>Last Update: {update_time} - Sea Surface Temp: {sst_f}F/{sst_c}C \
+        - Air Temp: {air_temp_f}F/{air_temp_c}C<br>Air Pressure: {air_press}mb \
+       - Relative Humidity: {rh}%</b></h4>')
   
 })
