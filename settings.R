@@ -16,6 +16,9 @@ url_hist <- 'https://opendata.arcgis.com/datasets/5fd6f3e57d794a409d72f47d78f15a
 date_col = "collection_date"
 temp_col = "sea_surface_temp_avg_c"
 
+# Number of seconds to cycle tabs if enabled
+tab_cycle_rate <- 15
+
 # Plot height and width for different screens
 gbl_plot_height <- 800
 gbl_plot_width <- 1024
