@@ -128,3 +128,5 @@ source('tab_line_anim/tab_line_anim_ui.R')
 source('tab_spiral_anim/tab_spiral_anim_ui.R')
 source('tab_swimdays/tab_swimdays_ui.R')
 
+tabnames <- c('about', 'rt', 'ytd', 'ts', 'heatmap', 
+              'line_anim', 'spiral_anim', 'swimdays')

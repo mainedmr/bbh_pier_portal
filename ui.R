@@ -40,6 +40,22 @@ shinyUI(function(req) {
         #style = 'position: fixed; overflow: visible;',
         # Id used to get selected tab
         id = 'tab_panel',
+        # Slider to turn tab cycling on/off
+        shinyWidgets::switchInput(
+          inputId = 'cycle',
+          label = 'Cycle',
+          value = T,
+          onLabel = 'On',
+          offLabel = 'Off',
+          onStatus = NULL,
+          offStatus = NULL,
+          size = "default",
+          labelWidth = "auto",
+          handleWidth = "auto",
+          disabled = FALSE,
+          inline = FALSE,
+          width = NULL
+        ),
         # About section
         menuItem('About', tabName = 'about', icon = icon('info')),
         # Real time

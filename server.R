@@ -3,6 +3,19 @@ library(shinyjs)
 library(glue)
 
 shinyServer(function(input, output, session) {
+  # Cycle through active tab
+  active <- reactiveValues(tab = 1)
+  
+  observe({
+    # Change every X secs
+    invalidateLater(tab_cycle_rate * 1000, session)
+    # Update tab if toggle on
+    isolate(active$tab <- active$tab%%length(tabnames) + 1)
+    if (input$cycle) {
+      updateTabItems(session,'tab_panel',tabnames[active$tab])
+    }
+  })
+  
   ## -------------------------------------------------------------------------
   ## About panel
   ## -------------------------------------------------------------------------
