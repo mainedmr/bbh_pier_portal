@@ -55,7 +55,9 @@ shinyUI(function(req) {
         # Spiral animation
         menuItem('Spiral Animation', tabName = 'spiral_anim', icon = icon('arrows-spin')),
         # Swimdays
-        menuItem('Swim Days', tabName = 'swimdays', icon = icon('person-swimming'))
+        menuItem('Swim Days', tabName = 'swimdays', icon = icon('person-swimming')),
+        # Tide
+        menuItem('Tide Data', tabName = 'tide', icon = icon('person-swimming'))
       )
     ),
     body = dashboardBody(
@@ -99,6 +101,10 @@ shinyUI(function(req) {
         # Swim days tab content
         tabItem(tabName = 'swimdays',
                 tab_swimdays_ui
+        ),
+        # Tide tab content
+        tabItem(tabName = 'tide',
+                tab_tide_ui
         )
       )
     ) # End dashboard body

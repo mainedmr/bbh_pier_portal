@@ -18,6 +18,8 @@ library(glue)
 #library(RColorBrewer)
 #library(scales)
 library(plotly)
+library(zoo)
+library(oce)
 
 # Base url to the GitHub repo with data and settings
 base_url <- "https://github.com/mainedmr/bbh_pier_portal/raw/main/"
@@ -36,7 +38,7 @@ source('functions.R')
 
 # Source tab text from GH
 devtools::source_url(paste0(base_url, "tab_text.R"))
-
+#source("tab_text.R")
 
 hist_data <- get_hist_data() %>%
   mutate(year = year(get(date_col)),
@@ -118,6 +120,46 @@ year_col <- 'year'
 year_min <- min(yearly_avg$year)
 year_max <- max(yearly_avg$year)
 
+# Source Hohonu API calls
+source('hohonu_api.R')
+hohonu_station <- "hohonu-169"
+
+update_tide <- F
+
+# Either a fresh pull or load tide data from file
+if (update_tide) {
+
+  # Get start/end date from API
+  hohonu_start_date <- hohonu_station_info(hohonu_api_key, hohonu_station)$installation_date %>%
+    as_datetime() %>%
+    hohonu_date()
+  
+  hohonu_to_date <- hohonu_station_last_update(hohonu_api_key, hohonu_station) %>%
+    hohonu_date()
+  
+  # Get all data
+  tide_data_raw <- hohonu_data(hohonu_api_key, hohonu_station, hohonu_start_date, hohonu_to_date)
+  
+  # Create a monotonic interval dataframe from min/max dates of data, every 6 minutes
+  monotonic <- data.frame(datetime = seq(min(tide_data_raw$datetime), max(tide_data_raw$datetime), by = '6 min'))
+  
+  tide_data <- monotonic %>%
+    # Left join data and then fill in gaps
+    left_join(tide_data_raw, by = 'datetime') %>%
+    mutate(datetime_est = with_tz(datetime, tzone = Sys.timezone()),
+           datetime_str = strftime(datetime, format = '%m/%d/%Y %H:%M'),
+           height_filled = zoo::na.approx(height, na.rm = F),
+           navd_m = height_filled * 0.3048)
+  save(tide_data, file = 'tide_data.Rda')
+} else {
+  load('tide_data.Rda')
+}
+
+tide_min_date <- as.Date(min(tide_data$datetime_est))
+tide_max_date <- as.Date(max(tide_data$datetime_est))
+
+# Load in tidal datums
+tidal_datums <- read_csv('tidal_datums.csv')
 
 # Source UI subfiles for each tab
 source('tab_rt/tab_rt_ui.R')
@@ -127,4 +169,10 @@ source('tab_heatmap/tab_heatmap_ui.R')
 source('tab_line_anim/tab_line_anim_ui.R')
 source('tab_spiral_anim/tab_spiral_anim_ui.R')
 source('tab_swimdays/tab_swimdays_ui.R')
+source('tab_tide/tab_tide_ui.R')
+
+
+#tabnames <- c('about', 'rt', 'ytd', 'ts', 'heatmap', 
+#              'line_anim', 'spiral_anim', 'swimdays')
+
 

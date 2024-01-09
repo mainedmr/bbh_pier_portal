@@ -108,4 +108,8 @@ shinyServer(function(input, output, session) {
   ## Swimdays tab panel
   ## -------------------------------------------------------------------------
   source('tab_swimdays/tab_swimdays_srv.R', local = T)
+  ## -------------------------------------------------------------------------
+  ## Tide gauge tab panel
+  ## -------------------------------------------------------------------------
+  source('tab_tide/tab_tide_srv.R', local = T)
 }) # End shinyServer
