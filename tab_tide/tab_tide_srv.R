@@ -25,10 +25,10 @@ tide_data_live <- reactivePoll(1000, NULL,
       arrange(datetime)
     # Calculate tidal prediction model for the loaded data
     # Build sealevel model
-    datsl <- as.sealevel(elevation = all_tide_data$navd_m, time = all_tide_data$datetime)
+    datsl <- as.sealevel(elevation = all_tide_data$height, time = all_tide_data$datetime)
     tidal_model <- tidem(t = datsl)
     # Add tide predictions to observed data
-    all_tide_data$navd_m_predicted <- predict(tidal_model)
+    all_tide_data$navd_predicted <- predict(tidal_model)
     return(all_tide_data)
   }
 )
@@ -45,8 +45,8 @@ tide_datum_offset <- reactive({
 tide_sel_data <- reactive({
   tide_data_live() %>%
     dplyr::filter(between(as.Date(datetime_est), input$tide_dates[1], input$tide_dates[2])) %>%
-    mutate(tide_height = navd_m + tide_datum_offset(), 
-           tide_prediction = navd_m_predicted + tide_datum_offset()) 
+    mutate(tide_height = height_filled + tide_datum_offset(), 
+           tide_prediction = navd_predicted + tide_datum_offset()) 
 })
 
 # Reactive to calculate the ebb/flood times for the selected tidal date range
@@ -77,6 +77,6 @@ output$tide_plot <- plotly::renderPlotly({
     geom_line(data = tide_sel_data(), aes(x = datetime_est, y = tide_height), color = 'blue') +
     geom_line(data = tide_sel_data(), aes(x = datetime_est, y = tide_prediction), color = 'purple') +
     #geom_vline(xintercept = lubridate::now(), color = 'black') +
-    labs(y = 'Tide Height', x = 'Datetime (EST)')
+    labs(y = 'Tide Height (ft)', x = 'Datetime (EST)')
   plotly::ggplotly(p)
 })

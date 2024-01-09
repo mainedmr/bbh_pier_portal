@@ -6,7 +6,7 @@ tab_tide_ui <- tags$div(
         # Tidal datum selector
         selectizeInput('tide_datum', 'Tidal Datum',
                        choices = unique(tidal_datums$datum),
-                       selected = 'MLLW'),
+                       selected = 'NAVD88'),
         # Tide date range selector
         dateRangeInput('tide_dates', 'Tide Date Range',
           start = Sys.Date() - lubridate::weeks(),
