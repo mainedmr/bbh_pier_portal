@@ -80,3 +80,7 @@ tb_swimdays_text <- tagList(
     ' and the plot will update to show how many days per year were above the chosen temperature.'
   )
 )
+
+tb_tide_text <- tagList(
+  h3('Tidal Gauge')
+)
