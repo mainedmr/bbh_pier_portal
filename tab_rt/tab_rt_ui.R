@@ -6,9 +6,9 @@ tab_rt_ui <- tags$div(
       fluidRow(
         valueBoxOutput('val_time', width = 4),
         valueBoxOutput('val_sst', width = 2),
-        valueBoxOutput('val_air_temp', width = 2),
-        valueBoxOutput('val_pressure', width = 2),
-        valueBoxOutput('val_rh', width = 2)
+        #valueBoxOutput('val_air_temp', width = 2),
+        valueBoxOutput('val_pressure', width = 2)#,
+        #valueBoxOutput('val_rh', width = 2)
       ),
       fluidRow(
         h3('Hourly Data from the Past Week', align = 'center')

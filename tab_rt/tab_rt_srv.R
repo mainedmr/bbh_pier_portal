@@ -21,6 +21,8 @@ ytd_cols <- reactive({
   col_names <- ytd() %>%
     dplyr::select(-starts_with('datetime')) %>%
     colnames()
+  # Remove air temp and RH columns
+  col_names <- col_names[!grepl('air|rh', col_names, ignore.case = T)]
   names(col_names) <- snakecase::to_title_case(col_names) %>%
     replace(., list = c(which(. == 'Temp f'), which(. == 'Temp c')), 
             values = c('Sea Surface Temp F', 'Sea Surface Temp C'))
@@ -60,13 +62,13 @@ output$val_sst <- renderValueBox({
     icon = icon('water')
   )
 })
-output$val_air_temp <- renderValueBox({
-  valueBox(
-    subtitle = glue('Air Temp ({temp_label()})'),
-    value = ifelse(input$temp_is_c, current_conditions()$air_temp_c, current_conditions()$air_temp_f),
-    icon = icon('temperature-full')
-  )
-})
+# output$val_air_temp <- renderValueBox({
+#   valueBox(
+#     subtitle = glue('Air Temp ({temp_label()})'),
+#     value = ifelse(input$temp_is_c, current_conditions()$air_temp_c, current_conditions()$air_temp_f),
+#     icon = icon('temperature-full')
+#   )
+# })
 output$val_pressure <- renderValueBox({
   valueBox(
     subtitle = 'Pressure (mbar)',
@@ -74,26 +76,25 @@ output$val_pressure <- renderValueBox({
     icon = icon('wind')
   )
 })
-output$val_rh <- renderValueBox({
-  valueBox(
-    subtitle = 'Relative Humidity (%)',
-    value = current_conditions()$rh,
-    icon = icon('percent')
-  )
-})
+# output$val_rh <- renderValueBox({
+#   valueBox(
+#     subtitle = 'Relative Humidity (%)',
+#     value = current_conditions()$rh,
+#     icon = icon('percent')
+#   )
+# })
 
 # Render current conditions in the header
 output$header_text <- renderText({
   update_time <- current_conditions()$datetime_char
   sst_f <- round(current_conditions()$temp_f, 2)
   sst_c <- round(current_conditions()$temp_c, 2)
-  air_temp_f <- round(current_conditions()$air_temp_f, 2)
-  air_temp_c <- round(current_conditions()$air_temp_c, 2)
+  #air_temp_f <- round(current_conditions()$air_temp_f, 2)
+  #air_temp_c <- round(current_conditions()$air_temp_c, 2)
   air_press <- round(current_conditions()$bp_avg_mb, 2)
-  rh <- round(current_conditions()$rh, 2)
+  #rh <- round(current_conditions()$rh, 2)
   
   glue('<h4 align="center"><b>Last Update: {update_time} - Sea Surface Temp: {sst_f}F/{sst_c}C \
-        - Air Temp: {air_temp_f}F/{air_temp_c}C<br>Air Pressure: {air_press}mb \
-       - Relative Humidity: {rh}%</b></h4>')
+        - Air Pressure: {air_press}mb </b></h4>')
   
 })
