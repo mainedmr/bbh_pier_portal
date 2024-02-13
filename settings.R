@@ -48,5 +48,5 @@ theme_set(
 )
 
 # API key for Hohonu
-hohonu_api_key <- "332e48c2e8b4408ff1ffc5ecf6f76d9c9239679f"
+hohonu_api_key <- "API_KEY_HERE"
 
